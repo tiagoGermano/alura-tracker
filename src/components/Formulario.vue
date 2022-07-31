@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box formulario">
     <div class="columns">
       <div
         class="column is-8"
@@ -10,26 +10,11 @@
           type="text"
           class="input"
           placeholder="Qual tarefa você deseja iniciar?"
+          v-model="description"
         />
       </div>
       <div class="column">
-        <div
-          class="is-flex is-align-items-center is-justify-content-space-between"
-        >
-          <section>{{progressTime}}</section>
-          <button class="button" @click="start">
-            <span class="icon">
-              <i class="fas fa-play"></i>
-            </span>
-            <span>play</span>
-          </button>
-          <button class="button" @click="stop">
-            <span class="icon">
-              <i class="fas fa-stop"></i>
-            </span>
-            <span>stop</span>
-          </button>
-        </div>
+        <tc-temporalizador @onFinished="finishTask"/>
       </div>
     </div>
   </div>
@@ -37,29 +22,32 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import tcTemporalizador from "./Temporalizador.vue";
 
 export default defineComponent({
   name: "TrackerFormulario",
-  data: ()=>{
+  components: {tcTemporalizador},
+  emits : ['onFinish'],
+  data () {
     return {
-        timeInSeconds : 0,
-        intervalID : -1
-    }
-  },
-  computed: {
-    progressTime() : string {
-        return new Date(this.timeInSeconds * 1000).toISOString().substr(11,8)
+      description: ''
     }
   },
   methods: {
-    start(){
-        this.intervalID = setInterval(() => {
-            this.timeInSeconds +=1;
-        }, 1000);
-    },
-    stop(){
-        clearInterval(this.intervalID);
+    finishTask(elapsedTime : number): void {
+      this.$emit('onFinish', {
+        description: this.description,
+        duration: elapsedTime,
+      });
+      
+      this.description = '';
     }
   }
 });
 </script>
+<style>
+.formulario {
+  color: var(--texto-primario);
+  background-color: var(--bg-primario);
+}
+</style>

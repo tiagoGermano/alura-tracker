@@ -3,10 +3,32 @@
     <h1>
       <img src="../assets/logo.png" alt="alura-tracker logo" />
     </h1>
-    <span class="dark-theme-switch" @click="togleModoNoturno">
-      <i class="switch-icon fa-regular fa-moon"></i>
-      <span class="switch-caption">Modo Noturno</span>
-    </span>
+    <nav class="panel mt-5">
+      <ul>
+        <li>
+          <router-link to="/" >
+            <span class="dark-theme-switch" >
+              <i class="switch-icon fa-solid fa-list-check"></i>
+              <span class="switch-caption">Tasks</span>
+            </span>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/projects">
+            <span class="dark-theme-switch">
+              <i class="switch-icon fa-solid fa-folder-tree"></i>
+              <span class="switch-caption">Projects</span>
+            </span>   
+          </router-link>
+        </li>
+        <li>
+          <span class="dark-theme-switch" @click="togleModoNoturno">
+            <i class="switch-icon fa-regular fa-moon"></i>
+            <span class="switch-caption">Modo Noturno</span>
+          </span>
+        </li>
+      </ul>
+    </nav>
   </header>
 </template>
 

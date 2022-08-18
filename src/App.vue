@@ -4,6 +4,7 @@
       <BarraLateral @onTogleModoNoturno="changeStyle"/>
     </div>
     <div class="column is-three-quarter conteudo">
+      <Notifications />
       <router-view></router-view>
     </div>
   </main>
@@ -13,11 +14,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import BarraLateral from './components/BarraLateral.vue';
+import Notifications from './components/Notifications.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     BarraLateral,
+    Notifications
   },
   data () {
     return {

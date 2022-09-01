@@ -1,8 +1,10 @@
 import IProject from "@/interfaces/IProject";
 import { createStore, Store, useStore as vueUseStore } from "vuex";
 import { InjectionKey } from 'vue'
-import { ADD_PROJECT, DELETE_PROJECT, NOTIFY, UPDATE_PROJECT } from "./mutation-types";
-import { INotification, NotificationType } from "@/interfaces/INotification";
+import { ADD_PROJECT, DEFINE_PROJECTS, DELETE_PROJECT, NOTIFY, UPDATE_PROJECT } from "./mutation-types";
+import { INotification } from "@/interfaces/INotification";
+import { GET_ALL_PROJECTS, SAVE_PROJECT } from "./actions-types";
+import http from "@/http"
 
 interface State {
     projects : IProject[],
@@ -17,6 +19,9 @@ export const store = createStore<State>({
         notifications: [],
     },
     mutations: {
+        [DEFINE_PROJECTS](state, projects: IProject[]) {
+            state.projects = projects;
+        },
         [ADD_PROJECT](state, projectName: string) {
             const project = {
                 //id: new Date().toISOString(),
@@ -40,6 +45,24 @@ export const store = createStore<State>({
                 state.notifications = state.notifications.filter(n => n.id != notification.id)
             }, 3000)            
         },
+    },
+    actions: {
+        [GET_ALL_PROJECTS] ({ commit }) {
+            http.get('projects')
+                .then(response => commit(DEFINE_PROJECTS, response.data));
+        },
+        [SAVE_PROJECT] (context, projectName: string) {
+            return http.post('/projects', {
+                name: projectName
+            })
+        },
+        [UPDATE_PROJECT] (context, project :IProject) {
+            return http.put(`/projects/${project.id}`, project)
+        },
+        [DELETE_PROJECT] ({commit}, id :string) {
+            http.delete(`/projects/${id}`)
+                .then(() => commit(DELETE_PROJECT, id))
+        }        
     }
 })
 

@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "name": "CashFlow"
+    },
+    {
+      "id": "2",
+      "name": "Estudar Vue.js (Alura)"
+    }
+  ]
+}

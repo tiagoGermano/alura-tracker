@@ -19,9 +19,9 @@
 
 <script lang="ts">
 import { useStore } from '@/store'
-import { ADD_PROJECT, UPDATE_PROJECT } from '@/store/mutation-types'
 import { defineComponent } from 'vue'
 import useNotificator from '@/hooks/notificator'
+import { SAVE_PROJECT, UPDATE_PROJECT } from '@/store/actions-types'
 
 
 export default defineComponent({
@@ -51,14 +51,21 @@ export default defineComponent({
               id: this.id,
               name: this.projectName
             }
-            this.store.commit(UPDATE_PROJECT, project)
+            this.store.dispatch(UPDATE_PROJECT, project)
+              .then(response => {
+                this.projectName = ''
+                this.message.success(`Projeto ${response.data.name} foi atualizado com sucesso!`)
+                this.$router.push('/projects')                
+              })
           } else {
-            this.store.commit(ADD_PROJECT, this.projectName)
+            this.store.dispatch(SAVE_PROJECT, this.projectName)
+              .then(response => {
+                this.projectName = ''
+                this.message.success(`Projeto ${response.data.name} foi cadastrado com sucesso!`)
+                this.$router.push('/projects')
+              })
           }
 
-          this.projectName = ''
-          this.message.success('O projeto foi cadastrado com sucesso!')
-          this.$router.push('/projects')
         }
     },
     setup() {
